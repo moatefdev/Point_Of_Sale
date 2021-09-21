@@ -4,6 +4,7 @@ import { IRegisterForm } from 'src/app/shared/generalObject';
 import { db } from './../../shared/registerDB';
 import { ToastrService } from 'ngx-toastr';
 import { isIdentifier } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +22,7 @@ export class RegisterComponent implements OnInit {
   passwordLettersState = false;
   passwordOneNumberState = false;
   passwordCharsState = false;
-  constructor(private toastr: ToastrService) {}
+  constructor(private toastr: ToastrService, private router: Router) {}
 
   // registerData: Array<IRegisterForm> = [];
 
@@ -63,6 +64,15 @@ export class RegisterComponent implements OnInit {
       });
       localStorage.setItem(registerDataValues.username, JSON.stringify(db[0]));
       console.log(...db);
+      this.toastr.success('Done. You can login, now.', 'Form Submission', {
+        timeOut: 1700,
+      });
+      this.toastr.info('Going to Login page.', 'Form Submission', {
+        timeOut: 1300,
+      });
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 3500);
     }
   }
   generatePasswordHash(pass: string): any {

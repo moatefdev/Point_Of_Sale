@@ -11,6 +11,7 @@
       <i class="fas fa-user"></i>
     </button>
     <ul [hidden]="hidden">
+      <li><a routerLink="/pos">POS</a></li>
       <li *ngIf="user_Position == 'admin'">
         <a routerLink="/admin/dashboard">Dashboard</a>
       </li>
