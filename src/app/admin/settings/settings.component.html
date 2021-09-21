@@ -1,0 +1,27 @@
+<app-navbar></app-navbar>
+<header>
+  <div class="container">
+    <h1>Settings</h1>
+  </div>
+</header>
+
+<section>
+  <div class="row">
+    <div class="container">
+      <form #settings="ngForm" (ngSubmit)="saveSettings(settings)">
+        <div class="form-group">
+          <label for="storeName" class="form-label mr-2">Store Name:</label>
+          <input
+            id="storeName"
+            name="storeName"
+            type="text"
+            placeholder="Enter your store name"
+            style="padding: 5px"
+            [(ngModel)]="storeName"
+          />
+        </div>
+        <button type="submit" class="btn btn-info">Save</button>
+      </form>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,176 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <article>
+    <div class="row">
+      <!-- Button trigger modal -->
+      <button
+        type="button"
+        class="btn btn-primary mr-2"
+        data-toggle="modal"
+        data-target="#items"
+      >
+        Add Items
+      </button>
+      <!-- Button trigger modal - Category -->
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-toggle="modal"
+        data-target="#exampleModal"
+      >
+        Add Category
+      </button>
+    </div>
+    <div class="row">
+      <!-- <span *ngFor="let cate of foodCategories"></span> -->
+      <select
+        #mySelect
+        class="custom-select"
+        (change)="onCategoryChange(mySelect.value)"
+      >
+        <option selected>All</option>
+        <option *ngFor="let cate of foodCategories" [ngValue]="cate">
+          {{ cate }}
+        </option>
+      </select>
+      <!-- <div *ngFor="let cate of foodCategories">
+      </div> -->
+      <table id="myTable" class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Item Name</th>
+            <th>Price</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of food; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ item.itemName }}</td>
+            <td>{{ item.itemPrice }}</td>
+            <td class="dashboard_actions">
+              <i class="fas fa-edit" (click)="onEdit(item)"></i>
+            </td>
+            <td class="dashboard_actions">
+              <i class="fas fa-trash" (click)="onDelete(item)"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="items"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div id="modal-dialog" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Items</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="items"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form #addItemsForm="ngForm" (ngSubmit)="addCategory(addItemsForm)">
+          <div class="form-group">
+            <select
+              class="custom-select"
+              #mySelect
+              (change)="filterItems(mySelect.value)"
+            >
+              <option *ngFor="let cate of foodCategories" [ngValue]="cate">
+                {{ cate }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input
+              class="form-control"
+              type="text"
+              name="itemName"
+              ngModel
+              placeholder="Item Name"
+            />
+          </div>
+          <div class="form-group">
+            <input
+              class="form-control"
+              type="number"
+              name="itemPrice"
+              ngModel
+              placeholder="price"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <input type="submit" class="btn btn-primary" value="Add" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal - Category -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div id="modal-dialog" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form #category="ngForm" (ngSubmit)="addCategory(category)">
+          <div class="form-group">
+            <input
+              class="form-control"
+              type="text"
+              name="cateName"
+              ngModel
+              placeholder="Category Name"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <input type="submit" class="btn btn-primary" value="Add" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

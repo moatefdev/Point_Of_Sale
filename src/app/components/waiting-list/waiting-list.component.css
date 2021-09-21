@@ -1,0 +1,22 @@
+section {
+  display: flex;
+  margin: 3px auto;
+}
+
+section .card {
+  margin: 0 10px;
+  border: 0;
+}
+
+section .card .list-group-item {
+  border: 0;
+}
+
+section .divider {
+  width: 3px;
+  background-color: #000;
+}
+
+section .ready {
+  align-items: flex-end;
+}

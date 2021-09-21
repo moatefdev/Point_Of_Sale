@@ -1,0 +1,24 @@
+<section class="topbar">
+  <div class="container-fluid">
+    <p>
+      <a routerLink="/pos">
+        <span><i class="fas fa-store"></i></span>
+        {{ theStoreName || "Store Name" }}
+      </a>
+    </p>
+    <p>{{ "Hi " + current_user_fullName }}</p>
+    <button (click)="toggleTopbarMenu()" class="topbarImg">
+      <i class="fas fa-user"></i>
+    </button>
+    <ul [hidden]="hidden">
+      <li *ngIf="user_Position == 'admin'">
+        <a routerLink="/admin/dashboard">Dashboard</a>
+      </li>
+      <li *ngIf="user_Position == 'admin'">
+        <a routerLink="/admin/kitchen">Kitchen</a>
+      </li>
+      <li><a routerLink="/admin/settings">Settings</a></li>
+      <li><a routerLink="/login">Log Out</a></li>
+    </ul>
+  </div>
+</section>

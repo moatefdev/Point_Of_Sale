@@ -1,0 +1,9 @@
+p {
+  display: none;
+}
+
+@media (max-width: 924px) {
+  p {
+    display: block;
+  }
+}

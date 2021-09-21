@@ -1,0 +1,150 @@
+.categories .container-fluid {
+  display: flex;
+}
+
+.categories .cates {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  margin-right: 5px;
+  background-color: #eee;
+}
+
+.categories .cates .items {
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  grid-row-gap: 10px;
+  justify-content: space-around;
+}
+
+.categories .cates .items section.item {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  padding: 3px;
+  cursor: pointer;
+  justify-content: flex-end;
+}
+
+.categories .cates .items section.item img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.categories .choose-cates {
+  display: flex;
+  align-items: center;
+  margin: 3px 0 15px 0;
+}
+
+.categories .choose-cates > p {
+  font-weight: bold;
+  font-size: 1.1em;
+  font-family: sans-serif;
+}
+
+.categories .choose-cates button {
+  background-color: #673ab7;
+  color: #fff;
+  margin: 0 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+.categories .cates p {
+  margin: 0;
+}
+
+.categories .cashier {
+  width: 30%;
+}
+
+.categories .cates,
+.categories .cashier {
+  /* border: 1px solid #000; */
+  padding: 5px;
+}
+
+.categories .cashier form p.formTitle {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.categories .cashier form .whereToEat {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.categories .cashier form .client-details label {
+  width: 66px;
+}
+
+.categories .cashier form .orderdItems {
+  display: flex;
+  justify-content: space-between;
+}
+
+.categories .cashier form .orderdItems table.table-responsive {
+  width: 100%;
+  overflow-y: scroll;
+  height: 215px;
+}
+
+.categories .cashier form .orderdItems .item-details {
+  width: 60%;
+}
+
+.categories .cashier form .orderdItems .itemCtrls {
+  width: 40%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.categories .cashier form .itemCtrls input {
+  width: 50px;
+  font-size: 1.5em;
+}
+
+.categories .cashier form table button {
+  border: 0;
+  background-color: #f44336;
+  color: #fff;
+  font-size: 1.2em;
+}
+
+.categories .cashier form .place-order {
+  display: flex;
+  justify-content: space-around;
+}
+
+.categories .cashier form .place-order input[type="submit"],
+.categories .cashier form .place-order button {
+  width: 45%;
+}
+
+/* Start Modal */
+.modal .modal-body {
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  grid-template-rows: repeat(2, auto);
+  gap: 10px;
+}
+
+.modal .modal-body .tables {
+  background-color: #673ab7;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal .modal-body .tables span {
+  cursor: pointer;
+  padding: 20px 30px;
+}
+.modal .modal-body .tables:hover {
+  background-color: dodgerblue;
+}
+/* End Modal */

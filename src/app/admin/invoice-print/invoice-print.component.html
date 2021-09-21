@@ -1,0 +1,65 @@
+<div class="container body">
+  <div class="row flex-column">
+    <div class="invoice-logo">
+      <p>{{ theStoreName }}</p>
+    </div>
+    <address>
+      Street City, State 000<br />
+      Tel: 01000000000<br />
+      Mail:
+      <a href="mailto:support@storname.com">support@storname.com</a>
+    </address>
+    <p class="invoice-title">Order</p>
+  </div>
+  <div class="container order-info">
+    <span>{{ invoicePlace }}</span>
+    <span>Order: {{ invoiceNumber }}</span>
+  </div>
+</div>
+<button routerLink="/admin/kitchen" class="btn btn-info">
+  <i class="fas fa-print"></i>
+  Print
+</button>
+<div class="container">
+  <div class="row">
+    <table class="table table-borderless table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Item</th>
+          <th scope="col">Qty</th>
+          <th scope="col">Price</th>
+          <th scope="col">Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of invoiceItems">
+          <td class="font-weight-bold">{{ item.itemName }}</td>
+          <td>{{ item.qty }}</td>
+          <td>{{ item.itemPrice }}</td>
+          <td>{{ item.qty * item.itemPrice }}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" class="font-weight-bold">Total:</td>
+          <td>{{ theTotal }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+<div class="container">
+  <div class="row justify-content-center">
+    <footer class="text-center">
+      <p class="font-weight-bold">Thank you</p>
+      <p class="">
+        Returns within 14 days and purchases within 24 hours of the original
+        invoice, and the products must be in their original condition
+      </p>
+      <img src="../../../assets/images/barcode.svg" />
+      <div>
+        <span>{{ shortDate }} {{ time }}</span>
+      </div>
+    </footer>
+  </div>
+</div>

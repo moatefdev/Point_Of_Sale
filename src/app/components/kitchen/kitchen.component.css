@@ -1,0 +1,7 @@
+section {
+  display: flex;
+}
+
+section .card {
+  margin: 10px;
+}

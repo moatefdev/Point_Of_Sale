@@ -1,0 +1,206 @@
+<app-navbar></app-navbar>
+<article class="categories">
+  <div class="container-fluid">
+    <section class="cates">
+      <div class="choose-cates">
+        <p>Category:</p>
+        <button
+          *ngIf="foodCategories.length != 0"
+          [attr.data-item]="'all'"
+          class="items-cate btn"
+          (click)="onCategoryClick('all')"
+        >
+          All
+        </button>
+        <div id="categories">
+          <button
+            *ngFor="let item of foodCategories"
+            [attr.data-item]="item"
+            class="items-cate btn"
+            (click)="onCategoryClick(item)"
+          >
+            {{ item }}
+          </button>
+        </div>
+        <p *ngIf="foodCategories.length === 0">&nbsp;Fetching Categories ...</p>
+      </div>
+      <div class="items">
+        <div *ngFor="let item of food">
+          <section class="item" (click)="addSelectedItems(item)">
+            <p>{{ item.itemName }}</p>
+            <div>
+              <img [src]="item.itemImg" alt="" />
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+    <section class="cashier">
+      <form
+        ngNativeValidate
+        [formGroup]="invoiceForm"
+        (ngSubmit)="onSave()"
+        action=""
+      >
+        <p class="formTitle">Orders</p>
+        <div class="form-group whereToEat">
+          <span class="font-weight-bold">Where to Eat:</span>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="table"
+              formControlName="whereToEat"
+              value="table"
+            />
+            <label
+              class="form-check-label"
+              for="table"
+              data-toggle="modal"
+              data-target="#exampleModal"
+            >
+              Table
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="flexRadioDefault2"
+              formControlName="whereToEat"
+              value="takeaway"
+            />
+            <label class="form-check-label" for="flexRadioDefault2">
+              Takeaway
+            </label>
+          </div>
+        </div>
+        <div class="client-details">
+          <fieldset>
+            <legend>Client Details</legend>
+            <div class="form-group">
+              <label for="">Name:</label>
+              <input type="text" formControlName="clientName" id="" />
+            </div>
+            <div class="form-group">
+              <label for="">Phone:</label>
+              <input type="text" formControlName="clientPhone" id="" />
+            </div>
+            <div class="form-group">
+              <label for="">Address:</label>
+              <input type="text" formControlName="clientAddress" id="" />
+            </div>
+          </fieldset>
+        </div>
+        <section class="orderdItems">
+          <table
+            class="table table-responsive table-striped table-hover"
+            formArrayName="items"
+          >
+            <thead>
+              <th>Item</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Action</th>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let item of getItemsArray(); let i = index"
+                [formGroupName]="i"
+              >
+                <td>{{ item.get("itemName")?.value }}</td>
+                <td>
+                  <div class="itemCtrls">
+                    <input
+                      type="number"
+                      [attr.id]="i"
+                      min="1"
+                      formControlName="qty"
+                      (change)="calcItemPrice(i)"
+                    />
+                  </div>
+                </td>
+                <td>{{ item.get("itemPrice")?.value | currency: "EGP" }}</td>
+                <!-- <td>{{ itemPriceTotal }}</td> -->
+                <td>
+                  <button (click)="onDelete(i)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4">Total: {{ total }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </section>
+        <div class="place-order">
+          <button class="btn btn-success" type="submit">
+            <i class="fas fa-shopping-cart"></i>
+            Place Order
+          </button>
+          <!-- <input
+            class="btn btn-success"
+            type="submit"
+            value="&#f07a; Place Order"
+          /> -->
+          <button routerLink="/invoice-print" class="btn btn-info">
+            <i class="fas fa-print"></i>
+            Print
+          </button>
+        </div>
+      </form>
+    </section>
+  </div>
+</article>
+
+<!-- Start Table Popup -->
+<!-- Button trigger modal -->
+<!-- <button
+  type="button"
+  class="btn btn-primary"
+
+>
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tables</h5>
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="tables" *ngFor="let table of tables">
+          <span (click)="tableNumber(table)">{{ table }}</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <p>
+          Choosed Table is: <b>{{ numberOfTable }}</b>
+        </p>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Choose The Table
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Table Popup -->
+
+<app-mobile-error></app-mobile-error>

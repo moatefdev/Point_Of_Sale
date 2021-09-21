@@ -1,0 +1,80 @@
+.body {
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.invoice-logo {
+  background-image: url(../../../assets/images/invoice-logo.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  margin: auto;
+  width: 250px;
+}
+
+.invoice-logo p {
+  color: #fff;
+  line-height: 150px;
+  margin: 0;
+  font-size: 1.5em;
+}
+
+p.invoice-title {
+  font-size: 1.5em;
+  position: relative;
+}
+
+p.invoice-title::before {
+  content: "";
+  display: block;
+  width: 30%;
+  height: 2px;
+  background: #000;
+  right: 0;
+  top: 50%;
+  position: absolute;
+}
+
+p.invoice-title::after {
+  content: "";
+  display: block;
+  width: 30%;
+  height: 2px;
+  background: #000;
+  left: 0;
+  top: 50%;
+  position: absolute;
+}
+
+.order-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  font-size: 1.2em;
+}
+
+table {
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table tbody {
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+}
+
+/* table tbody tr td {
+  text-align: center;
+} */
+
+footer {
+  padding: 20px 0;
+}
+
+footer p {
+  font-size: 1.2em;
+}
+
+footer img {
+  margin: 10px 0;
+}

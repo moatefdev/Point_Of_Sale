@@ -1,0 +1,160 @@
+<div class="container">
+  <article class="row">
+    <section class="login-bg">
+      <figure>
+        <img src="../../../assets/images/register.jfif" alt="" />
+      </figure>
+    </section>
+    <section class="form">
+      <form #register="ngForm" (ngSubmit)="saveSignupData(register)">
+        <div class="form-group">
+          <label for="fullName">Full Name:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="fullName"
+            aria-describedby="emailHelp"
+            ngModel
+            name="name"
+          />
+          <div
+            class="alert alert-danger"
+            role="alert"
+            [hidden]="alertisHidden"
+            [ngSwitch]="invalidName"
+          >
+            <div *ngSwitchCase="'empty'">Full Name can't be empty</div>
+            <div *ngSwitchCase="'invalid'">Enter a valid name.</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            aria-describedby="emailHelp"
+            ngModel
+            name="username"
+          />
+          <div
+            class="alert alert-danger"
+            role="alert"
+            [hidden]="alertisHidden"
+            [ngSwitch]="invalidName"
+          >
+            <div *ngSwitchCase="'empty'">Username can't be empty</div>
+            <div *ngSwitchCase="'invalid'">Enter a valid username.</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input
+            type="email"
+            class="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            ngModel
+            name="email"
+            pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/"
+          />
+          <div
+            class="alert alert-danger"
+            role="alert"
+            [hidden]="alertisHidden"
+            [ngSwitch]="invalidName"
+          >
+            <div *ngSwitchCase="'empty'">Email can't be empty</div>
+            <div *ngSwitchCase="'invalid'">Enter a valid email.</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="exampleInputPassword1"
+            ngModel
+            name="password"
+            (focus)="showPasswordConstraintsBox()"
+            (blur)="showPasswordConstraintsBox()"
+            (input)="checkPasswordStrength(register)"
+          />
+          <!-- passwordConstraintsBoxIsHidden -->
+          <div [hidden]="passwordConstraintsBoxIsHidden">
+            <p>Password must contains:</p>
+            <!-- <i class="fas fa-check-circle"></i> -->
+            <!-- fas fa-times-circle -->
+            <ul class="list-unstyled password_constraints_invalid">
+              <li
+                [ngClass]="{ password_constraints_valid: passwordLengthState }"
+              >
+                <i
+                  [ngClass]="
+                    passwordLengthState
+                      ? 'fas fa-check-circle'
+                      : 'fas fa-times-circle'
+                  "
+                ></i>
+                8 letters at least.
+              </li>
+              <li
+                [ngClass]="{ password_constraints_valid: passwordLettersState }"
+              >
+                <i
+                  [ngClass]="
+                    passwordLettersState
+                      ? 'fas fa-check-circle'
+                      : 'fas fa-times-circle'
+                  "
+                ></i>
+                Capital and small letters.
+              </li>
+              <li
+                [ngClass]="{
+                  password_constraints_valid: passwordOneNumberState
+                }"
+              >
+                <i
+                  [ngClass]="
+                    passwordOneNumberState
+                      ? 'fas fa-check-circle'
+                      : 'fas fa-times-circle'
+                  "
+                ></i>
+                One number at least.
+              </li>
+              <li
+                [ngClass]="{ password_constraints_valid: passwordCharsState }"
+              >
+                <i
+                  [ngClass]="
+                    passwordCharsState
+                      ? 'fas fa-check-circle'
+                      : 'fas fa-times-circle'
+                  "
+                ></i>
+                One character like: <b>_</b>, <b>#</b>, <b>!</b>, <b>$</b> at
+                least.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="">Choose your position:</label>
+          <select #selectPosition class="custom-select" ngModel name="position">
+            <option selected value="admin">Admin</option>
+            <option value="cashier">Cashier</option>
+          </select>
+        </div>
+        <button style="margin-right: 5px" type="submit" class="btn btn-primary">
+          Sing Up
+        </button>
+        <button type="reset" class="btn btn-outline-secondary">Reset</button>
+        <p class="mt-3">
+          Already have an account? <a routerLink="/login">Log In</a>
+        </p>
+      </form>
+    </section>
+  </article>
+</div>

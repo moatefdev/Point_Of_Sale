@@ -1,0 +1,23 @@
+article {
+  display: flex;
+  justify-content: space-around;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+}
+
+article .login-bg {
+  width: 45%;
+}
+
+article .login-bg figure {
+  margin: 0;
+}
+article .login-bg figure img {
+  max-width: 100%;
+}
+
+article .form {
+  width: 45%;
+}
