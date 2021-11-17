@@ -10,6 +10,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SettingsComponent implements OnInit {
   storeName: any = '';
+  storeAddress: any = '';
+  storePhoneNumber: any = '';
+  storeEmail: any = '';
   constructor(
     private settings: SettingsService,
     private toastr: ToastrService
@@ -17,19 +20,31 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.storeName = window.localStorage.getItem('storeName');
-    console.log(this.storeName);
+    this.storeAddress = window.localStorage.getItem('storeAddress');
+    this.storePhoneNumber = window.localStorage.getItem('storePhoneNumber');
+    this.storeEmail = window.localStorage.getItem('storeEmail');
   }
   saveSettings(settings: NgForm) {
-    const storeName = settings.value;
-    console.log(storeName);
-    console.log(storeName.storeName);
-    if (storeName.storeName == '') {
-      this.toastr.error('Please, enter the store name', 'Store Name', {
+    const settingsValue = settings.value;
+    console.log(settingsValue);
+    console.log(settingsValue.storeName);
+    if (
+      settingsValue.storeName == '' ||
+      settingsValue.storeAddress == '' ||
+      settingsValue.storePhoneNumber == '' ||
+      settingsValue.storeEmail == ''
+    ) {
+      this.toastr.error('Please, enter all store info', 'Store Info', {
         timeOut: 1700,
       });
     } else {
-      this.settings.saveTheStoreName(storeName.storeName);
-      this.toastr.success('Done', 'Store Name', {
+      this.settings.saveTheStoreName(
+        settingsValue.storeName,
+        settingsValue.storeAddress,
+        settingsValue.storePhoneNumber,
+        settingsValue.storeEmail
+      );
+      this.toastr.success('Done', 'Store Info', {
         timeOut: 1700,
       });
     }

@@ -261,7 +261,7 @@ export class PosComponent implements OnInit {
   onSave() {
     // Add Where to eat to the service
     const whereToEatValue = this.invoiceForm.get('whereToEat')?.value;
-    if (whereToEatValue === 'table') {
+    if (whereToEatValue === 'Table') {
       this.invoiceItems.invoiceWhere(
         this.invoiceForm.get('whereToEat')?.value + ' ' + this.numberOfTable
       );

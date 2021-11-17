@@ -1,3 +1,8 @@
+* {
+  -webkit-print-color-adjust: exact !important; /* Chrome, Safari, Edge */
+  color-adjust: exact !important; /*Firefox*/
+}
+
 .body {
   text-align: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -10,6 +15,12 @@
   background-position: center;
   margin: auto;
   width: 250px;
+}
+
+@media print {
+  .invoice-logo {
+    background-image: url(../../../assets/images/invoice-logo.png) !important;
+  }
 }
 
 .invoice-logo p {

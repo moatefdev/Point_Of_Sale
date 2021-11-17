@@ -33,6 +33,8 @@ export class RegisterComponent implements OnInit {
   saveSignupData(registerForm: NgForm) {
     const FormControls = registerForm.controls;
     let registerDataValues = registerForm.value;
+    console.log(FormControls);
+    console.log(registerDataValues);
     if (
       this.checkRegisterFormValidation(
         event,

@@ -13,16 +13,25 @@ export class InvoicePrintComponent implements OnInit {
   invoiceItems: any;
   theTotal = 0;
   theStoreName: string = '';
+  theStoreAddress: any = '';
+  theStorePhoneNumber: any = '';
+  theStoreEmail: any = '';
   shortDate = '';
   time = '';
   invoiceNumber = 0;
   constructor(
     private theInvoiceItems: SelectedItemsService,
-    private storeName: SettingsService
+    private storeName: SettingsService,
+    private storeAddress: SettingsService,
+    private storePhoneNumber: SettingsService,
+    private storeEmail: SettingsService
   ) {}
 
   ngOnInit(): void {
     this.theStoreName = this.storeName.getTheStoreName();
+    this.theStoreAddress = this.storeAddress.getTheStoreAddress();
+    this.theStorePhoneNumber = this.storePhoneNumber.getTheStorePhoneNumber();
+    this.theStoreEmail = this.storeEmail.getTheStoreEmail();
     this.invoicePlace = this.theInvoiceItems.invoiceWhereValue();
     // this.invoiceItems = this.theInvoiceItems.invoiceItemsValue();
     console.log(this.invoicePlace);
@@ -30,9 +39,9 @@ export class InvoicePrintComponent implements OnInit {
 
     this.invoiceItems = this.theInvoiceItems.invoiceItemsValue();
     this.total();
-    // setTimeout(() => {
-    //   window.print();
-    // }, 3000);
+    setTimeout(() => {
+      window.print();
+    }, 2500);
     this.randomNumber(1, 10);
     this.getDate();
   }

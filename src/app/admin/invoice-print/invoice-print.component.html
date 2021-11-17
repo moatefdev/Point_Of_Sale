@@ -1,13 +1,15 @@
 <div class="container body">
   <div class="row flex-column">
     <div class="invoice-logo">
-      <p>{{ theStoreName }}</p>
+      <p>{{ theStoreName || "Store Name" }}</p>
     </div>
     <address>
-      Street City, State 000<br />
-      Tel: 01000000000<br />
+      {{ theStoreAddress || "Street City, State 000" }}<br />
+      {{ theStorePhoneNumber || "Tel: 01000000000" }}<br />
       Mail:
-      <a href="mailto:support@storname.com">support@storname.com</a>
+      <a href="mailto:{{ theStoreEmail }}">{{
+        theStoreEmail || "support@storname.com"
+      }}</a>
     </address>
     <p class="invoice-title">Order</p>
   </div>
@@ -16,10 +18,6 @@
     <span>Order: {{ invoiceNumber }}</span>
   </div>
 </div>
-<button routerLink="/admin/kitchen" class="btn btn-info">
-  <i class="fas fa-print"></i>
-  Print
-</button>
 <div class="container">
   <div class="row">
     <table class="table table-borderless table-sm">
