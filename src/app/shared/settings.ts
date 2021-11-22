@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable()
 export class SettingsService {
@@ -6,6 +7,8 @@ export class SettingsService {
   storeAddress: any = '';
   storePhoneNumber: any = '';
   storeEmail: any = '';
+
+  constructor(private route: Router, private urlPath: ActivatedRoute) {}
 
   saveTheStoreName(
     name: string,
@@ -34,5 +37,12 @@ export class SettingsService {
   getTheStoreEmail() {
     this.storeEmail = localStorage.getItem('storeEmail');
     return this.storeEmail;
+  }
+  isUserLoggedIn() {
+    const user = window.sessionStorage.getItem('current_user');
+    if (user == null) {
+      alert('Login required to access this page.');
+      this.route.navigate(['/login']);
+    }
   }
 }

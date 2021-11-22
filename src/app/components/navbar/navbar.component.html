@@ -10,7 +10,7 @@
     <button (click)="toggleTopbarMenu()" class="topbarImg">
       <i class="fas fa-user"></i>
     </button>
-    <ul [hidden]="hidden">
+    <ul class="nav-menu" [hidden]="hidden">
       <li><a routerLink="/pos">POS</a></li>
       <li *ngIf="user_Position == 'admin'">
         <a routerLink="/admin/dashboard">Dashboard</a>
@@ -19,7 +19,7 @@
         <a routerLink="/admin/kitchen">Kitchen</a>
       </li>
       <li><a routerLink="/admin/settings">Settings</a></li>
-      <li><a routerLink="/login">Log Out</a></li>
+      <li class="nav-menu__log-out"><a (click)="logOut()">Log Out</a></li>
     </ul>
   </div>
 </section>

@@ -42,7 +42,8 @@ export class PosComponent implements OnInit {
     private invoiceItems: SelectedItemsService,
     private storeName: SettingsService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private settings: SettingsService
   ) {
     this.invoiceForm = new FormGroup({
       whereToEat: new FormControl(null, Validators.required),
@@ -58,6 +59,7 @@ export class PosComponent implements OnInit {
 
   ngOnInit(): void {
     // this.getUserFullName();
+    this.settings.isUserLoggedIn();
     this.categoryItems();
     this.foodItemDetails();
     this.generateTables();

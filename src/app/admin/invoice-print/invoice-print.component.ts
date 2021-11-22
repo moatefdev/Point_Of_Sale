@@ -24,10 +24,12 @@ export class InvoicePrintComponent implements OnInit {
     private storeName: SettingsService,
     private storeAddress: SettingsService,
     private storePhoneNumber: SettingsService,
-    private storeEmail: SettingsService
+    private storeEmail: SettingsService,
+    private settings: SettingsService
   ) {}
 
   ngOnInit(): void {
+    this.settings.isUserLoggedIn();
     this.theStoreName = this.storeName.getTheStoreName();
     this.theStoreAddress = this.storeAddress.getTheStoreAddress();
     this.theStorePhoneNumber = this.storePhoneNumber.getTheStorePhoneNumber();

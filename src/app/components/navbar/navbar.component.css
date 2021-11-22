@@ -56,3 +56,7 @@ a {
   text-decoration: none;
   color: #000;
 }
+
+.nav-menu__log-out {
+  cursor: pointer;
+}

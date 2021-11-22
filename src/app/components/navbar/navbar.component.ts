@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { SettingsService } from 'src/app/shared/settings';
 
 @Component({
@@ -12,7 +13,7 @@ export class NavbarComponent implements OnInit {
   user_Position = '';
   hidden = true; // important
 
-  constructor(private storeName: SettingsService) {}
+  constructor(private storeName: SettingsService, private route: Router) {}
 
   ngOnInit(): void {
     this.setStoreName();
@@ -42,5 +43,9 @@ export class NavbarComponent implements OnInit {
       String(sessionStorage.getItem('current_user'))
     ).position;
     console.log(this.user_Position);
+  }
+  logOut() {
+    window.sessionStorage.removeItem('current_user');
+    this.route.navigate(['/login']);
   }
 }

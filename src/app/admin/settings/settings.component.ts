@@ -19,6 +19,7 @@ export class SettingsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.settings.isUserLoggedIn();
     this.storeName = window.localStorage.getItem('storeName');
     this.storeAddress = window.localStorage.getItem('storeAddress');
     this.storePhoneNumber = window.localStorage.getItem('storePhoneNumber');

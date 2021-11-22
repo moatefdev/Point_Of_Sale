@@ -9,6 +9,7 @@ import {
 } from '../../shared/generalObject';
 import { SelectedItemsService } from '../../shared/selectedItems';
 import { DashboardService } from '../../shared/dashboard.service';
+import { SettingsService } from 'src/app/shared/settings';
 
 declare var $: any;
 
@@ -27,10 +28,12 @@ export class DashboardComponent implements OnInit {
   constructor(
     private foodService: FoodItems,
     private invoiceItems: SelectedItemsService,
-    private addCate: DashboardService
+    private addCate: DashboardService,
+    private settings: SettingsService
   ) {}
 
   ngOnInit(): void {
+    this.settings.isUserLoggedIn();
     $(document).ready(function () {
       $('#myTable').DataTable();
     });
