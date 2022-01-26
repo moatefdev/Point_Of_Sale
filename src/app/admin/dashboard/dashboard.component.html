@@ -2,79 +2,294 @@
 <div class="container">
   <article>
     <div class="row">
-      <!-- Button trigger modal -->
-      <button
-        type="button"
-        class="btn btn-primary mr-2"
-        data-toggle="modal"
-        data-target="#items"
-      >
-        Add Items
-      </button>
-      <!-- Button trigger modal - Category -->
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-toggle="modal"
-        data-target="#exampleModal"
-      >
-        Add Category
-      </button>
+      <ul class="nav nav-pills mb-3 mt-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="users-home-tab"
+            data-toggle="pill"
+            data-target="#users-tab"
+            type="button"
+            role="tab"
+            aria-controls="users-home"
+            aria-selected="true"
+            (click)="getUsers()"
+          >
+            Users
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="pills-home-tab"
+            data-toggle="pill"
+            data-target="#pills-home"
+            type="button"
+            role="tab"
+            aria-controls="pills-home"
+            aria-selected="true"
+          >
+            Products
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="pills-profile-tab"
+            data-toggle="pill"
+            data-target="#pills-profile"
+            type="button"
+            role="tab"
+            aria-controls="pills-profile"
+            aria-selected="false"
+          >
+            Actions
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="pills-contact-tab"
+            data-toggle="pill"
+            data-target="#pills-contact"
+            type="button"
+            role="tab"
+            aria-controls="pills-contact"
+            aria-selected="false"
+          >
+            Deleted Products
+          </button>
+        </li>
+      </ul>
     </div>
-    <div class="row">
-      <!-- <span *ngFor="let cate of foodCategories"></span> -->
-      <select
-        #mySelect
-        class="custom-select"
-        (change)="onCategoryChange(mySelect.value)"
+    <div class="tab-content" id="pills-tabContent">
+      <div
+        class="tab-pane fade show active"
+        id="pills-home"
+        role="tabpanel"
+        aria-labelledby="pills-home-tab"
       >
-        <option selected>All</option>
-        <option *ngFor="let cate of foodCategories" [ngValue]="cate">
-          {{ cate }}
-        </option>
-      </select>
-      <!-- <div *ngFor="let cate of foodCategories">
-      </div> -->
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Item Name</th>
-            <th>Price</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of food; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>{{ item.itemName }}</td>
-            <td>{{ item.itemPrice }}</td>
-            <td class="dashboard_actions">
-              <i class="fas fa-edit" (click)="onEdit(item)"></i>
-            </td>
-            <td class="dashboard_actions">
-              <i class="fas fa-trash" (click)="onDelete(item)"></i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <div class="row">
+          <select
+            #mySelect
+            class="custom-select"
+            (change)="onCategoryChange(mySelect.value)"
+            [ngModel]="'All'"
+          >
+            <option>All</option>
+            <option
+              *ngFor="let cate of foodCategories"
+              [value]="cate.categoryName"
+            >
+              {{ cate.categoryName }}
+            </option>
+          </select>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Category</th>
+                <th>Item Name</th>
+                <th>Price</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of food; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.category }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.price }}</td>
+                <td class="dashboard_actions">
+                  <button
+                    class="btn btn-info mr-2"
+                    data-toggle="modal"
+                    data-target="#updateProduct"
+                    (click)="onUpdate(item)"
+                  >
+                    <i class="fas fa-edit"></i> Update
+                  </button>
+                  <button class="btn btn-danger" (click)="onRemove(item)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot *ngIf="food.length === 0">
+              <tr>
+                <td colspan="4">
+                  <div class="alert alert-warning" role="alert">
+                    No Content Here
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div
+        class="tab-pane fade"
+        id="pills-profile"
+        role="tabpanel"
+        aria-labelledby="pills-profile-tab"
+      >
+        <div class="row dash-actions">
+          <!-- Button trigger modal - Add Category -->
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-toggle="modal"
+            data-target="#addCategory"
+          >
+            Add Category
+          </button>
+          <!-- <button (click)="addCate.click()">test</button> -->
+          <!-- Button trigger modal - Remove Category -->
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-toggle="modal"
+            data-target="#removeCategory"
+          >
+            Remove Category
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-toggle="modal"
+            data-target="#items"
+          >
+            Add Product
+          </button>
+        </div>
+      </div>
+      <div
+        class="tab-pane fade"
+        id="pills-contact"
+        role="tabpanel"
+        aria-labelledby="pills-contact-tab"
+      >
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Category</th>
+              <th>Item Name</th>
+              <th>Price</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of notVisibleProducts; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.category }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.price }}</td>
+              <td class="dashboard_actions">
+                <button
+                  class="btn btn-info mr-2"
+                  (click)="showProduct(item._id)"
+                >
+                  <i
+                    class="fas fa-eye"
+                    data-toggle="tooltip"
+                    data-placement="right"
+                    title="This will delete product permanently"
+                  ></i>
+                  Show
+                </button>
+                <button
+                  class="btn btn-danger"
+                  data-toggle="tooltip"
+                  data-placement="right"
+                  title="This will delete product permanently"
+                  (click)="onDelete(item._id)"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot *ngIf="notVisibleProducts.length === 0">
+            <tr>
+              <td colspan="4">
+                <div class="alert alert-warning" role="alert">
+                  No Content Here
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div
+        class="tab-pane fade"
+        id="users-tab"
+        role="tabpanel"
+        aria-labelledby="users-tab"
+      >
+        <div class="row mb-2">
+          <button class="btn btn-primary" (click)="addUser()">
+            <i class="fas fa-user-plus"></i> Add User
+          </button>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Full Name</th>
+              <th>Username</th>
+              <th>Password</th>
+              <th>Role</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ user.fullname }}</td>
+              <td>{{ user.username }}</td>
+              <td>**********</td>
+              <td>{{ user.admin == true ? "Admin" : "Cashier" }}</td>
+              <td class="dashboard_actions">
+                <button
+                  class="btn btn-danger"
+                  data-toggle="tooltip"
+                  data-placement="right"
+                  title="This will delete product permanently"
+                  (click)="onRemoveUser(user._id)"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="6" *ngIf="users.length === 0">
+                <div class="alert alert-warning" role="alert">
+                  No Content Here
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
   </article>
 </div>
-
-<!-- Modal -->
+<!-- ==================== Below are the POPS ==================== -->
+<!-- Modal - Add Product -->
 <div
   class="modal fade"
   id="items"
   tabindex="-1"
-  aria-labelledby="exampleModalLabel"
+  aria-labelledby="addItemsForm"
   aria-hidden="true"
 >
   <div id="modal-dialog" class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Items</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
         <button
           type="button"
           class="close"
@@ -83,15 +298,19 @@
         ></button>
       </div>
       <div class="modal-body">
-        <form #addItemsForm="ngForm" (ngSubmit)="addCategory(addItemsForm)">
+        <form #addItemsForm="ngForm" (ngSubmit)="addProduct(addItemsForm)">
           <div class="form-group">
             <select
               class="custom-select"
               #mySelect
-              (change)="filterItems(mySelect.value)"
+              name="category"
+              [ngModel]="'grill'"
             >
-              <option *ngFor="let cate of foodCategories" [ngValue]="cate">
-                {{ cate }}
+              <option
+                *ngFor="let cate of foodCategories"
+                [value]="cate.categoryName"
+              >
+                {{ cate.categoryName }}
               </option>
             </select>
           </div>
@@ -113,8 +332,19 @@
               placeholder="price"
             />
           </div>
+          <div class="form-group">
+            <input
+              #myfile
+              class="form-control"
+              type="file"
+              name="myfile"
+              ngModel
+              (change)="onFileChanged(myfile)"
+            />
+          </div>
           <div class="modal-footer">
             <button
+              id="closeAddProduct"
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
@@ -129,10 +359,11 @@
   </div>
 </div>
 
-<!-- Modal - Category -->
+<!-- Categories -->
+<!-- Modal - Add Category -->
 <div
   class="modal fade"
-  id="exampleModal"
+  id="addCategory"
   tabindex="-1"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
@@ -149,7 +380,7 @@
         ></button>
       </div>
       <div class="modal-body">
-        <form #category="ngForm" (ngSubmit)="addCategory(category)">
+        <form #category="ngForm" (ngSubmit)="insertCategory(category)">
           <div class="form-group">
             <input
               class="form-control"
@@ -161,6 +392,8 @@
           </div>
           <div class="modal-footer">
             <button
+              #closeAddCategoryModal
+              id="closeAddCategory"
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
@@ -168,6 +401,134 @@
               Close
             </button>
             <input type="submit" class="btn btn-primary" value="Add" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal - Remove Category -->
+<div
+  class="modal fade"
+  id="removeCategory"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div id="modal-dialog" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Remove Category</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <select #myCatgory class="custom-select">
+            <option *ngFor="let cate of foodCategories" [value]="cate._id">
+              {{ cate.categoryName }}
+            </option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            id="closeRemoveCategory"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="submit"
+            class="btn btn-danger"
+            (click)="removeCategory(myCatgory)"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal - Update Product -->
+<div
+  class="modal fade"
+  id="updateProduct"
+  tabindex="-1"
+  aria-labelledby="addItemsForm"
+  aria-hidden="true"
+>
+  <div id="modal-dialog" class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header d-block">
+        <h5 class="modal-title" id="exampleModalLabel">Update Product</h5>
+        <div class="alert alert-warning mt-1 mb-0" role="alert">
+          <span class="font-weight-bold">⚠️Attention:</span> Updatting product
+          image feature is not available at the current time.
+        </div>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="items"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form
+          #updateProduct="ngForm"
+          (ngSubmit)="editProduct(updateProduct)"
+          *ngFor="let item of itemToUpdate"
+        >
+          <div class="form-group">
+            <select
+              class="custom-select"
+              #mySelect
+              name="category"
+              [(ngModel)]="item.category"
+            >
+              <option
+                *ngFor="let cate of foodCategories"
+                [value]="cate.categoryName"
+              >
+                {{ cate.categoryName }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input
+              class="form-control"
+              type="text"
+              name="itemName"
+              [(ngModel)]="item.name"
+              placeholder="Item Name"
+            />
+          </div>
+          <div class="form-group">
+            <input
+              class="form-control"
+              type="number"
+              name="itemPrice"
+              [(ngModel)]="item.price"
+              placeholder="price"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              id="closeUpdateProduct"
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <input type="submit" class="btn btn-info" value="Update" />
           </div>
         </form>
       </div>

@@ -6,7 +6,12 @@
         {{ theStoreName || "Store Name" }}
       </a>
     </p>
-    <p>{{ "Hi " + current_user_fullName }}</p>
+    <div *ngIf="user_fullName; else unknown">
+      <p>{{ "Hi " + user_fullName }}</p>
+    </div>
+    <ng-template #unknown>
+      <p>Unknown</p>
+    </ng-template>
     <button (click)="toggleTopbarMenu()" class="topbarImg">
       <i class="fas fa-user"></i>
     </button>
@@ -14,9 +19,6 @@
       <li><a routerLink="/pos">POS</a></li>
       <li *ngIf="user_Position == 'admin'">
         <a routerLink="/admin/dashboard">Dashboard</a>
-      </li>
-      <li *ngIf="user_Position == 'admin'">
-        <a routerLink="/admin/kitchen">Kitchen</a>
       </li>
       <li><a routerLink="/admin/settings">Settings</a></li>
       <li class="nav-menu__log-out"><a (click)="logOut()">Log Out</a></li>

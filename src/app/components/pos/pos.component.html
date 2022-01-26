@@ -4,14 +4,6 @@
     <section class="cates">
       <div class="choose-cates">
         <p>Category:</p>
-        <button
-          *ngIf="foodCategories.length != 0"
-          [attr.data-item]="'all'"
-          class="items-cate btn"
-          (click)="onCategoryClick('all')"
-        >
-          All
-        </button>
         <div id="categories">
           <button
             *ngFor="let item of foodCategories"
@@ -19,7 +11,7 @@
             class="items-cate btn"
             (click)="onCategoryClick(item)"
           >
-            {{ item }}
+            {{ item.categoryName }}
           </button>
         </div>
         <p *ngIf="foodCategories.length === 0">&nbsp;Fetching Categories ...</p>
@@ -27,9 +19,9 @@
       <div class="items">
         <div *ngFor="let item of food">
           <section class="item" (click)="addSelectedItems(item)">
-            <p>{{ item.itemName }}</p>
+            <p>{{ item.name }}</p>
             <div>
-              <img [src]="item.itemImg" alt="" />
+              <img src="{{ url + item.productImage }}" alt="" />
             </div>
           </section>
         </div>
@@ -203,4 +195,4 @@
 </div>
 <!-- End Table Popup -->
 
-<app-mobile-error></app-mobile-error>
+<!-- <app-mobile-error></app-mobile-error> -->

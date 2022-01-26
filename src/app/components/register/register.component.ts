@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, NgForm } from '@angular/forms';
 import { IRegisterForm } from 'src/app/shared/generalObject';
-import { db } from './../../shared/registerDB';
 import { ToastrService } from 'ngx-toastr';
 import { isIdentifier } from '@angular/compiler';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/shared/user.service';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
   alertisHidden = true;
   invalidName = '';
-  invalidEmail = '';
+  // invalidEmail = '';
   invalidPassword = '';
   invalidSelect = '';
   passwordConstraintsBoxIsHidden = true;
@@ -22,25 +22,28 @@ export class RegisterComponent implements OnInit {
   passwordLettersState = false;
   passwordOneNumberState = false;
   passwordCharsState = false;
-  constructor(private toastr: ToastrService, private router: Router) {}
+  constructor(
+    private toastr: ToastrService,
+    private router: Router,
+    private user: UserService
+  ) {}
 
   // registerData: Array<IRegisterForm> = [];
 
   ngOnInit(): void {
-    // this.saveSignupData;
+    this.user.checkUserLoggdInAndAuthorized();
   }
 
   saveSignupData(registerForm: NgForm) {
     const FormControls = registerForm.controls;
     let registerDataValues = registerForm.value;
-    console.log(FormControls);
+    // console.log(FormControls);
     console.log(registerDataValues);
     if (
       this.checkRegisterFormValidation(
         event,
         FormControls.name,
         FormControls.username,
-        FormControls.email,
         FormControls.password
       ) === true
     ) {
@@ -57,24 +60,28 @@ export class RegisterComponent implements OnInit {
         timeOut: 1700,
       });
     } else {
-      db.push({
-        name: registerDataValues.name,
-        username: registerDataValues.username,
-        email: registerDataValues.email,
-        hash: this.generatePasswordHash(registerDataValues.password),
-        position: registerDataValues.position,
+      // ---
+      // db.push({
+      //   name: registerDataValues.name,
+      //   username: registerDataValues.username,
+      //   hash: this.generatePasswordHash(registerDataValues.password),
+      //   position: registerDataValues.position,
+      // });
+      // localStorage.setItem(registerDataValues.username, JSON.stringify(db[0]));
+      // ----
+      this.user.signup(registerDataValues).subscribe((data: any) => {
+        console.log(data);
       });
-      localStorage.setItem(registerDataValues.username, JSON.stringify(db[0]));
-      console.log(...db);
+      // console.log(...db);
       this.toastr.success('Done. You can login, now.', 'Form Submission', {
         timeOut: 1700,
       });
       this.toastr.info('Going to Login page.', 'Form Submission', {
         timeOut: 1300,
       });
-      setTimeout(() => {
-        this.router.navigate(['/login']);
-      }, 3500);
+      // setTimeout(() => {
+      //   this.router.navigate(['/login']);
+      // }, 3500);
     }
   }
   generatePasswordHash(pass: string): any {
@@ -98,20 +105,14 @@ export class RegisterComponent implements OnInit {
     event: Event | undefined,
     name: AbstractControl,
     username: AbstractControl,
-    email: AbstractControl,
     password: AbstractControl
   ): boolean {
     console.log(event);
-    if (
-      name.value === '' ||
-      username.value === '' ||
-      email.value === '' ||
-      password.value === ''
-    ) {
+    if (name.value === '' || username.value === '' || password.value === '') {
       event?.preventDefault();
       this.alertisHidden = false;
       this.invalidName = 'empty';
-      this.invalidEmail = 'empty';
+      // this.invalidEmail = 'empty';
       this.toastr.error("Can't submit an empty form.", 'Form Submission', {
         timeOut: 1700,
       });

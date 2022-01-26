@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IInvoiceItems } from 'src/app/shared/generalObject';
-import { SelectedItemsService } from 'src/app/shared/selectedItems';
-import { SettingsService } from '../../shared/settings';
+import { SelectedItemsService } from 'src/app/shared/selectedItems.service';
+import { UserService } from 'src/app/shared/user.service';
+import { SettingsService } from '../../shared/settings.service';
 
 @Component({
   selector: 'app-invoice-print',
@@ -25,11 +26,12 @@ export class InvoicePrintComponent implements OnInit {
     private storeAddress: SettingsService,
     private storePhoneNumber: SettingsService,
     private storeEmail: SettingsService,
-    private settings: SettingsService
+    private settings: SettingsService,
+    private user: UserService
   ) {}
 
   ngOnInit(): void {
-    this.settings.isUserLoggedIn();
+    this.user.isLoggedIn();
     this.theStoreName = this.storeName.getTheStoreName();
     this.theStoreAddress = this.storeAddress.getTheStoreAddress();
     this.theStorePhoneNumber = this.storePhoneNumber.getTheStorePhoneNumber();

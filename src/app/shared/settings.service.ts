@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { CookieService } from 'ngx-cookie-service';
+import { UserService } from './user.service';
 @Injectable()
 export class SettingsService {
   storeName: any = '';
@@ -8,7 +9,12 @@ export class SettingsService {
   storePhoneNumber: any = '';
   storeEmail: any = '';
 
-  constructor(private route: Router, private urlPath: ActivatedRoute) {}
+  constructor(
+    private route: Router,
+    private urlPath: ActivatedRoute,
+    private user: UserService,
+    private cookieService: CookieService
+  ) {}
 
   saveTheStoreName(
     name: string,
@@ -39,8 +45,9 @@ export class SettingsService {
     return this.storeEmail;
   }
   isUserLoggedIn() {
-    const user = window.sessionStorage.getItem('current_user');
-    if (user == null) {
+    const user = this.cookieService.get('access_token');
+    console.log('cookie', user);
+    if (user == '') {
       alert('Login required to access this page.');
       this.route.navigate(['/login']);
     }

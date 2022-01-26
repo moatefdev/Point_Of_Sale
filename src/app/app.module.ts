@@ -5,17 +5,13 @@ import { PosComponent } from './components/pos/pos.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { KitchenComponent } from './components/kitchen/kitchen.component';
-import { WaitingListComponent } from './components/waiting-list/waiting-list.component';
-import { MobileErrorComponent } from './components/mobile-error/mobile-error.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
-import { AddItemsComponent } from './admin/add-items/add-items.component';
-import { FoodItems } from './shared/foodItems';
-import { SelectedItemsService } from './shared/selectedItems';
+import { FoodItems } from './shared/foodItems.service';
+import { SelectedItemsService } from './shared/selectedItems.service';
 import { InvoicePrintComponent } from './admin/invoice-print/invoice-print.component';
 import { SettingsComponent } from './admin/settings/settings.component';
-import { SettingsService } from './shared/settings';
+import { SettingsService } from './shared/settings.service';
 import { RegisterComponent } from './components/register/register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { DashboardService } from './shared/dashboard.service';
@@ -24,17 +20,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DataTablesModule } from 'angular-datatables';
 
 import { ToastrModule } from 'ngx-toastr';
+import { UserService } from './shared/user.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     PosComponent,
-    KitchenComponent,
-    WaitingListComponent,
-    MobileErrorComponent,
     DashboardComponent,
     LoginComponent,
-    AddItemsComponent,
     InvoicePrintComponent,
     SettingsComponent,
     RegisterComponent,
@@ -56,6 +49,7 @@ import { ToastrModule } from 'ngx-toastr';
     SelectedItemsService,
     SettingsService,
     DashboardService,
+    UserService,
   ],
   bootstrap: [AppComponent],
 })

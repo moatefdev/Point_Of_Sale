@@ -1,5 +1,6 @@
 .categories .container-fluid {
   display: flex;
+  height: calc(100vh - 56px);
 }
 
 .categories .cates {
@@ -89,7 +90,7 @@
 .categories .cashier form .orderdItems table.table-responsive {
   width: 100%;
   overflow-y: scroll;
-  height: 215px;
+  height: 280px;
 }
 
 .categories .cashier form .orderdItems .item-details {

@@ -13,10 +13,6 @@ export interface ISelectedItems {
   isSelected: boolean;
 }
 
-export interface IAllFood {
-  [key: string]: Array<IFoodItems>;
-}
-
 export interface IInvoiceItems {
   itemName: string;
   itemPrice: number;
@@ -26,8 +22,7 @@ export interface IInvoiceItems {
 export interface IRegisterForm {
   name: string;
   username: string;
-  email: string;
-  hash: string | number;
+  password: string | number;
   position: string;
 }
 

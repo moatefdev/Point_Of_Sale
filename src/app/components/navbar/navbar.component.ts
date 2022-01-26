@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SettingsService } from 'src/app/shared/settings';
+import { CookieService } from 'ngx-cookie-service';
+import { SettingsService } from 'src/app/shared/settings.service';
+import { UserService } from 'src/app/shared/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,11 +11,16 @@ import { SettingsService } from 'src/app/shared/settings';
 })
 export class NavbarComponent implements OnInit {
   theStoreName = '';
-  current_user_fullName = '';
-  user_Position = '';
+  user_fullName = '';
+  user_Position = 'admin';
   hidden = true; // important
 
-  constructor(private storeName: SettingsService, private route: Router) {}
+  constructor(
+    private storeName: SettingsService,
+    private route: Router,
+    private user: UserService,
+    private cookieService: CookieService
+  ) {}
 
   ngOnInit(): void {
     this.setStoreName();
@@ -31,21 +38,21 @@ export class NavbarComponent implements OnInit {
   }
 
   getUserFullName() {
-    // console.log(JSON.parse(CURRENT_USER_SESSION));
-    this.current_user_fullName = JSON.parse(
-      String(sessionStorage.getItem('current_user'))
-    ).name;
-    console.log(this.current_user_fullName);
+    this.user_fullName = localStorage.getItem('fullname')!;
   }
 
   getUserPosition() {
-    this.user_Position = JSON.parse(
-      String(sessionStorage.getItem('current_user'))
-    ).position;
-    console.log(this.user_Position);
+    if (window.localStorage.getItem('admin') === 'true') {
+      this.user_Position = 'admin';
+    } else {
+      this.user_Position = 'cashier';
+    }
   }
+
   logOut() {
-    window.sessionStorage.removeItem('current_user');
+    this.cookieService.delete('access_token');
+    localStorage.removeItem('fullname');
+    localStorage.removeItem('admin');
     this.route.navigate(['/login']);
   }
 }

@@ -1,13 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiConfig } from './apiConfig';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import {
-  IClientDetails,
-  IFoodItems,
-  IInvoiceItems,
-  ISelectedItems,
-} from './generalObject';
+import { IClientDetails } from './generalObject';
 
 @Injectable()
 export class SelectedItemsService {

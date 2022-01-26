@@ -1,7 +1,15 @@
-article button {
+/* article button {
   margin: 20px 0;
+} */
+
+table {
+  text-align: center;
 }
 
 .table tr td.dashboard_actions {
   cursor: pointer;
+}
+
+.dash-actions button {
+  margin-right: 20px;
 }

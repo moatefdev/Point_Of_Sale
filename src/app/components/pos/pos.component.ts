@@ -1,17 +1,15 @@
 // import { isNull } from '@angular/compiler/src/output/output_ast';
 import { Component, ElementRef, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { FoodItems } from '../../shared/foodItems';
-import {
-  IAllFood,
-  IFoodItems,
-  ISelectedItems,
-} from '../../shared/generalObject';
-import { SelectedItemsService } from '../../shared/selectedItems';
-import { SettingsService } from '../../shared/settings';
+import { FoodItems } from '../../shared/foodItems.service';
+import { IFoodItems, ISelectedItems } from '../../shared/generalObject';
+import { SelectedItemsService } from '../../shared/selectedItems.service';
+import { SettingsService } from '../../shared/settings.service';
 // import { CURRENT_USER_SESSION } from './../../shared/registerDB';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { UserService } from 'src/app/shared/user.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-pos',
@@ -25,9 +23,10 @@ export class PosComponent implements OnInit {
   hidden = true; // important
   allCateBtnHidden = true;
   foodCategories: any | Array<IFoodItems> = []; // important
-  food: any | Array<IFoodItems> = []; // important
-  allFood: IAllFood = {}; // important
-  selectedItems: Array<ISelectedItems> = []; // important
+  products: any | Array<IFoodItems> = []; // important
+  food: any[] = [];
+  url = 'https://pos-api-nodejs-website.herokuapp.com/uploads/';
+  selectedItems: any[] | Array<ISelectedItems> = []; // important
   formItems: Array<ISelectedItems> = []; // Not very important --- for testing
   qty = 1; // Not very important --- for testing
   tablesNumbers = 10;
@@ -43,7 +42,10 @@ export class PosComponent implements OnInit {
     private storeName: SettingsService,
     private router: Router,
     private toastr: ToastrService,
-    private settings: SettingsService
+    private settings: SettingsService,
+    private user: UserService,
+    private cookie: CookieService,
+    private route: Router
   ) {
     this.invoiceForm = new FormGroup({
       whereToEat: new FormControl(null, Validators.required),
@@ -58,14 +60,11 @@ export class PosComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.getUserFullName();
-    this.settings.isUserLoggedIn();
+    this.user.isLoggedIn();
     this.categoryItems();
-    this.foodItemDetails();
+    this.getProducts();
     this.generateTables();
     this.getFormArrayObject();
-    console.log(this.food);
-    console.log(this.tables);
   }
 
   //#region
@@ -86,10 +85,7 @@ export class PosComponent implements OnInit {
 
   // getUserFullName() {
   //   // console.log(JSON.parse(CURRENT_USER_SESSION));
-  //   this.current_user_fullName = JSON.parse(
-  //     String(sessionStorage.getItem('current_user'))
-  //   ).name;
-  //   console.log(this.current_user_fullName);
+  //   this.current_user_fullName = this.user.userData.fullname;
   // }
   //#endregion
 
@@ -97,36 +93,25 @@ export class PosComponent implements OnInit {
     // tslint:disable-next-line: no-shadowed-variable
     this.foodService.getItemsCategory().subscribe((data: any) => {
       window.setTimeout(() => {
-        this.foodCategories = data;
+        this.foodCategories = data.category;
       }, 2000);
     });
   }
 
-  foodItemDetails(): any {
-    // tslint:disable-next-line: no-shadowed-variable
-    this.foodService.getAllFoodItems().subscribe((data) => {
-      this.allFood = data ? data[0] : {};
-      console.log('the food:', data[0]);
+  getProducts(): any {
+    this.foodService.getProducts().subscribe((data: any) => {
+      this.products.push(...data.products);
     });
+    console.log(this.products);
+    return this.products;
   }
 
   // tslint:disable-next-line: typedef
-  onCategoryClick(item: string) {
-    console.log(item);
-    if (item === 'all') {
-      let foods: any[] = [];
-      // tslint:disable-next-line: prefer-for-of
-      for (let i = 0; i < Object.keys(this.allFood).length; i++) {
-        const allFoodCate = this.allFood[Object.keys(this.allFood)[i]];
-        foods = [...foods, ...allFoodCate];
-        // foods.push(allFoodCate[i]);
-        console.log(foods);
-      }
-      this.food = foods;
-    } else {
-      this.food = this.allFood[item];
-    }
-    console.log(this.food);
+  onCategoryClick(foodItem: any) {
+    const returnedObj = this.products.filter((prod: any) => {
+      return prod.category == foodItem.categoryName;
+    });
+    this.food = returnedObj;
   }
 
   getFormArrayObject() {
@@ -135,8 +120,9 @@ export class PosComponent implements OnInit {
     return myArray;
   }
 
-  addSelectedItems(item: ISelectedItems): any {
+  addSelectedItems(item: any): any {
     // debugger;
+    console.log(item);
 
     if (this.selectedItems.length !== 0) {
       this.selectedItems = [];
@@ -144,9 +130,9 @@ export class PosComponent implements OnInit {
 
     if (this.selectedItems.length === 0) {
       this.selectedItems.push({
-        itemId: item.itemId,
-        itemName: item.itemName,
-        itemPrice: item.itemPrice,
+        itemId: item._id,
+        itemName: item.name,
+        itemPrice: item.price,
         itemQty: 1,
         isSelected: true,
       });
@@ -156,9 +142,9 @@ export class PosComponent implements OnInit {
           break;
         } else {
           this.selectedItems.push({
-            itemId: item.itemId,
-            itemName: item.itemName,
-            itemPrice: item.itemPrice,
+            itemId: item._id,
+            itemName: item.name,
+            itemPrice: item.price,
             itemQty: 1,
             isSelected: true,
           });

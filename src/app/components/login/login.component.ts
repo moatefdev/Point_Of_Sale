@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, NgForm } from '@angular/forms';
-// import { IRegisterForm } from 'src/app/shared/generalObject';
-// import { db } from './../../shared/registerDB';
-import { CURRENT_USER_SESSION } from './../../shared/registerDB';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/shared/user.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -13,50 +12,47 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   usernameIsNotValid = false;
   passwordIsNotValid = false;
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private user: UserService,
+    private cookieService: CookieService
+  ) {}
 
   ngOnInit(): void {
     this.loginUser;
   }
 
   loginUser(loginForm: NgForm) {
-    const loginData = loginForm.value;
-    console.log(loginForm.controls);
-    console.log(loginForm.controls.password.value.length);
-    this.checkLoginFormValidation(
-      loginForm.controls.username,
-      loginForm.controls.password
-    );
-    for (var i = 0; i < localStorage.length; i++) {
-      console.log(localStorage.key(i));
-      const usernameVal = JSON.parse(
-        localStorage.getItem(loginData.username) ?? ''
-      );
-      if (
-        loginData.username == localStorage.key(i) &&
-        this.generatePasswordHash(loginData.password) == usernameVal.hash
-      ) {
-        if (CURRENT_USER_SESSION.length === 0) {
-          /*
-            Setting sessionStorage value by getting it from localStorage
-            by getting it the username in the login form, whic is
-            the key of the local storage data.
-          */
+    const username = loginForm.controls.username;
+    const password = loginForm.controls.password;
 
-          sessionStorage.setItem(
-            'current_user',
-            String(localStorage.getItem(loginData.username))
-          );
-          this.router.navigate(['/pos']);
-        } else {
-          CURRENT_USER_SESSION.clear;
-        }
-        // console.log(JSON.parse(CURRENT_USER_SESSION));
-      }
+    // 1 - Check the validation of login fields
+    this.checkLoginFormValidation(username, password);
+
+    // 2 - after check validation and login fields are definitely valid
+    if (this.usernameIsNotValid == false && this.passwordIsNotValid == false) {
+      this.user.login(loginForm.value).subscribe((data: any) => {
+        console.log(this.user.userData);
+        console.log(data.user);
+        /*
+         * I am assigning `this.user.userData` with `...data.user`
+         * to set the fullname and admin value in localStorage
+         * and I can not depend on one of them (assigned values - first line in this comment (42))
+         * becuase `this.user.userData will be empty because it only filled with data when sigining up for the first time`
+         */
+        const returnedObj = Object.assign(this.user.userData, ...data.user);
+        localStorage.setItem('fullname', returnedObj.fullname);
+        localStorage.setItem('admin', returnedObj.admin);
+        console.log(returnedObj);
+        console.log(this.user.userData);
+        // 2.1 Set token in a cookie
+        this.cookieService.set('access_token', data.token);
+        this.router.navigate(['/pos']);
+      });
     }
-    console.log(loginForm.value);
   }
 
+  // Check login form validation
   checkLoginFormValidation(
     username: AbstractControl,
     password: AbstractControl
@@ -64,31 +60,8 @@ export class LoginComponent implements OnInit {
     if (username.value === '' && username.touched === true) {
       this.usernameIsNotValid = true;
     }
-    if (password.value.length === 0) {
+    if (password.value.length === 0 && username.touched === true) {
       this.passwordIsNotValid = true;
     }
-  }
-  // The following function iterates over the local storage keys:
-
-  // The following function iterates over the local storage keys and gets the value set for each key:
-
-  // for(var i =0; i < localStorage.length; i++){
-  //     console.log(localStorage.getItem(localStorage.key(i)));
-  // }
-  generatePasswordHash(pass: string): any {
-    // debugger;
-    let charCode = [];
-    const SECRET_KEY = 1;
-    let hashedPass = '';
-    for (let i = 0; i < pass.length; i++) {
-      charCode.push(pass[i].charCodeAt(0) + SECRET_KEY);
-    }
-    for (let i = 0; i < charCode.length; i++) {
-      hashedPass += String.fromCharCode(charCode[i]);
-    }
-    return hashedPass;
-    console.log(pass);
-    console.log(charCode);
-    console.log(hashedPass);
   }
 }
